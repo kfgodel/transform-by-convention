@@ -24,6 +24,13 @@
     <url>https://github.com/kfgodel/transform-by-convention</url>
   </scm>
 
+  <properties>
+    <version.bean2bean>1.1.4</version.bean2bean>
+    <version.diamond>1.0.1-SNAPSHOT</version.diamond>
+    <version.groovy>2.1.5</version.groovy>
+    <version.joda-time>2.7</version.joda-time>
+  </properties>
+
   <repositories>
     <repository>
       <id>kfgodel_mosquito</id>
@@ -31,5 +38,73 @@
       <url>http://kfgodel.info:8081/nexus/content/groups/public/</url>
     </repository>
   </repositories>
+
+  <dependencies>
+
+    <!-- Multi-type conversions -->
+    <dependency>
+      <groupId>net.sf.kfgodel</groupId>
+      <artifactId>bean2bean</artifactId>
+      <version>${version.bean2bean}</version>
+    </dependency>
+    <!-- Lenguaje de scripting para expresiones de conversiones -->
+    <dependency>
+      <!-- Groovy language -->
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <version>${version.groovy}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm-tree</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm-commons</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm-util</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm-analysis</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <!-- Time representations -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>${version.joda-time}</version>
+    </dependency>
+
+    <!-- Persistence types -->
+    <dependency>
+      <groupId>ar.com.tenpines</groupId>
+      <artifactId>ateam-hibernate</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+
+    <!-- Better reflection -->
+    <dependency>
+      <groupId>ar.com.kfgodel</groupId>
+      <artifactId>diamond</artifactId>
+      <version>${version.diamond}</version>
+    </dependency>
+
+    <!-- Follow known conventions -->
+    <dependency>
+      <groupId>ar.com.kfgodel</groupId>
+      <artifactId>by-convention</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+
+  </dependencies>
 
 </project>
