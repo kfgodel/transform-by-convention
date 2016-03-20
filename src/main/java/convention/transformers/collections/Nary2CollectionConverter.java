@@ -8,6 +8,7 @@ import net.sf.kfgodel.bean2bean.conversion.converters.CouldNotInstanstiateExcept
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 
+import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -19,6 +20,7 @@ import java.util.Iterator;
  */
 public class Nary2CollectionConverter implements SpecializedTypeConverter<Nary, Collection> {
 
+    @Inject
     private TypeConverter converter;
 
 

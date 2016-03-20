@@ -13,6 +13,7 @@ import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 import net.sf.kfgodel.dgarcia.lang.reflection.ReflectionUtils;
 
+import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
@@ -24,8 +25,10 @@ import java.lang.reflect.Type;
  */
 public class PersistibleTo2PersistentConverter implements SpecializedTypeConverter<PersistibleTo, PersistentSupport> {
 
+    @Inject
     private HibernateOrm hibernate;
 
+    @Inject
     private Bean2Bean bean2Bean;
 
     /**

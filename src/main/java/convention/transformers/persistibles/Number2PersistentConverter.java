@@ -7,6 +7,7 @@ import convention.persistent.PersistentSupport;
 import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 
+import javax.inject.Inject;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
@@ -16,6 +17,7 @@ import java.lang.reflect.Type;
  */
 public class Number2PersistentConverter implements SpecializedTypeConverter<Number, PersistentSupport> {
 
+    @Inject
     private HibernateOrm hibernate;
 
     @Override

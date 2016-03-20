@@ -105,6 +105,13 @@
       <version>0.1-SNAPSHOT</version>
     </dependency>
 
+    <!-- Allow dependency injection -->
+    <dependency>
+      <groupId>ar.com.kfgodel</groupId>
+      <artifactId>dependency-by-convention</artifactId>
+      <version>0.1-SNAPSHOT</version>
+    </dependency>
+
   </dependencies>
 
 </project>

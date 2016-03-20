@@ -1,5 +1,7 @@
 package ar.com.kfgodel.transformbyconvention.impl;
 
+import ar.com.kfgodel.dependencies.api.DependencyInjector;
+import ar.com.kfgodel.dependencies.impl.DependencyInjectorImpl;
 import ar.com.kfgodel.nary.api.Nary;
 import ar.com.kfgodel.transformbyconvention.api.TypeTransformer;
 import ar.com.kfgodel.transformbyconvention.api.tos.EnumTo;
@@ -33,81 +35,87 @@ import java.util.Collection;
  */
 public class B2BTransformer implements TypeTransformer {
 
-    private Bean2Bean b2bManipulator;
-    private TypeConverter b2bConverter;
+  private Bean2Bean b2bManipulator;
+  private TypeConverter b2bConverter;
 
-    public static B2BTransformer create(HibernateOrm persistenceModule) {
-        B2BTransformer converter = new B2BTransformer();
-        converter.initialize(persistenceModule);
-        return converter;
-    }
+  public static B2BTransformer create(HibernateOrm persistenceModule) {
+    B2BTransformer converter = new B2BTransformer();
+    converter.initialize(persistenceModule);
+    return converter;
+  }
 
-    private void initialize(HibernateOrm persistenceModule) {
-        b2bConverter = DefaultTypeConverter.create();
-        b2bManipulator = Bean2Bean.create(b2bConverter);
+  private void initialize(HibernateOrm persistenceModule) {
+    b2bConverter = DefaultTypeConverter.create();
+    b2bManipulator = Bean2Bean.create(b2bConverter);
 
-        // Use niladic constructor to instantiate types
-        b2bConverter.setObjectFactory(EmptyConstructorObjectFactory.create());
+    // Make dependencies available for injection into converters
+    DependencyInjector injector = DependencyInjectorImpl.create();
+    injector.bindTo(TypeConverter.class, b2bConverter);
+    injector.bindTo(Bean2Bean.class, b2bManipulator);
+    injector.bindTo(HibernateOrm.class, persistenceModule);
 
-        // Register specialized converters (order is irrelevant)
+    // Use niladic constructor to instantiate types
+    b2bConverter.setObjectFactory(EmptyConstructorObjectFactory.create());
 
-        // Datetimes
-        b2bConverter.registerSpecializedConverterFor(String.class, DateTime.class, String2DateTimeConverter.create());
-        b2bConverter.registerSpecializedConverterFor(DateTime.class, String.class, DateTime2StringConverter.create());
+    // Register specialized converters (order is irrelevant)
 
-        // Enums
-        b2bConverter.registerSpecializedConverterFor(String.class, Enum.class, String2EnumConverter.create());
-        b2bConverter.registerSpecializedConverterFor(Enum.class, String.class, Enum2StringConverter.create());
-        b2bConverter.registerSpecializedConverterFor(EnumTo.class, Enum.class, EnumTo2EnumConverter.create());
+    // Datetimes
+    b2bConverter.registerSpecializedConverterFor(String.class, DateTime.class, String2DateTimeConverter.create());
+    b2bConverter.registerSpecializedConverterFor(DateTime.class, String.class, DateTime2StringConverter.create());
 
-        // Doubles
-        b2bConverter.registerSpecializedConverterFor(String.class, Double.class, DecimalString2DoubleConverter.create());
-        b2bConverter.registerSpecializedConverterFor(Double.class, String.class, Double2DecimalStringConverter.create());
-        b2bConverter.registerSpecializedConverterFor(Double.class, Long.class, Double2LongConverter.create());
+    // Enums
+    b2bConverter.registerSpecializedConverterFor(String.class, Enum.class, String2EnumConverter.create());
+    b2bConverter.registerSpecializedConverterFor(Enum.class, String.class, Enum2StringConverter.create());
+    b2bConverter.registerSpecializedConverterFor(EnumTo.class, Enum.class, EnumTo2EnumConverter.create());
 
-        // Numbers
-        b2bConverter.registerSpecializedConverterFor(String.class, Number.class, String2NumberConverter.create());
+    // Doubles
+    b2bConverter.registerSpecializedConverterFor(String.class, Double.class, DecimalString2DoubleConverter.create());
+    b2bConverter.registerSpecializedConverterFor(Double.class, String.class, Double2DecimalStringConverter.create());
+    b2bConverter.registerSpecializedConverterFor(Double.class, Long.class, Double2LongConverter.create());
 
-        //Collections
-        b2bConverter.registerSpecializedConverterFor(Collection.class, Collection.class, Collection2CollectionConverter.create(b2bConverter));
-        b2bConverter.registerSpecializedConverterFor(Nary.class, Collection.class, Nary2CollectionConverter.create(b2bConverter));
+    // Numbers
+    b2bConverter.registerSpecializedConverterFor(String.class, Number.class, String2NumberConverter.create());
 
-        // Persistent objects
-        b2bConverter.registerSpecializedConverterFor(Identifiable.class, Long.class, Identifiable2NumberConverter.create());
-        b2bConverter.registerSpecializedConverterFor(Number.class, PersistentSupport.class, Number2PersistentConverter.create(persistenceModule));
-        b2bConverter.registerSpecializedConverterFor(PersistibleTo.class, PersistentSupport.class, PersistibleTo2PersistentConverter.create(b2bManipulator, persistenceModule));
+    //Collections
+    b2bConverter.registerSpecializedConverterFor(Collection.class, Collection.class, Collection2CollectionConverter.create(b2bConverter));
+    b2bConverter.registerSpecializedConverterFor(Nary.class, Collection.class, injector.createInjected(Nary2CollectionConverter.class));
 
-
-        // Register general converters (order indicates precedence)
-
-        // TO converter
-        b2bConverter.registerGeneralConverter(AnnotatedClassConverter.create(b2bManipulator));
-
-        // Arrays
-        b2bConverter.registerGeneralConverter(ArrayCollectionConverter.create(b2bConverter));
-        b2bConverter.registerGeneralConverter(ArrayArrayConverter.create(b2bConverter));
-
-        // Types that don't need conversion
-        b2bConverter.registerGeneralConverter(PolymorphismConverter.create());
-
-        // General String converter using json
-        b2bConverter.registerGeneralConverter(JsonStringObjectConverter.create());
-
-        // Primitive type converter
-        b2bConverter.registerGeneralConverter(WrappedXWorkConverter.create());
-
-        // Optional converter used by name
-        b2bConverter.registerGeneralConverter(FormatterConverter.create());
-    }
+    // Persistent objects
+    b2bConverter.registerSpecializedConverterFor(Identifiable.class, Long.class, Identifiable2NumberConverter.create());
+    b2bConverter.registerSpecializedConverterFor(Number.class, PersistentSupport.class, injector.createInjected(Number2PersistentConverter.class));
+    b2bConverter.registerSpecializedConverterFor(PersistibleTo.class, PersistentSupport.class, injector.createInjected(PersistibleTo2PersistentConverter.class));
 
 
-    @Override
-    public <T> T transformTo(Class<T> expectedClass, Object sourceObject) {
-        return b2bConverter.convertValueToClass(expectedClass, sourceObject);
-    }
+    // Register general converters (order indicates precedence)
 
-    @Override
-    public <R> R transformTo(Type expectedType, Object sourceObject) {
-        return b2bConverter.convertValue(sourceObject, expectedType);
-    }
+    // TO converter
+    b2bConverter.registerGeneralConverter(AnnotatedClassConverter.create(b2bManipulator));
+
+    // Arrays
+    b2bConverter.registerGeneralConverter(ArrayCollectionConverter.create(b2bConverter));
+    b2bConverter.registerGeneralConverter(ArrayArrayConverter.create(b2bConverter));
+
+    // Types that don't need conversion
+    b2bConverter.registerGeneralConverter(PolymorphismConverter.create());
+
+    // General String converter using json
+    b2bConverter.registerGeneralConverter(JsonStringObjectConverter.create());
+
+    // Primitive type converter
+    b2bConverter.registerGeneralConverter(WrappedXWorkConverter.create());
+
+    // Optional converter used by name
+    b2bConverter.registerGeneralConverter(FormatterConverter.create());
+  }
+
+
+  @Override
+  public <T> T transformTo(Class<T> expectedClass, Object sourceObject) {
+    return b2bConverter.convertValueToClass(expectedClass, sourceObject);
+  }
+
+  @Override
+  public <R> R transformTo(Type expectedType, Object sourceObject) {
+    return b2bConverter.convertValue(sourceObject, expectedType);
+  }
 }
