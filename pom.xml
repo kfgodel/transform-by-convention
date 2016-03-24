@@ -6,10 +6,9 @@
 
   <parent>
     <groupId>ar.com.kfgodel</groupId>
-    <artifactId>root-pom</artifactId>
+    <artifactId>java-pom</artifactId>
     <version>0.1-SNAPSHOT</version>
   </parent>
-
 
   <artifactId>transform-by-convention</artifactId>
   <version>0.1-SNAPSHOT</version>
@@ -110,6 +109,12 @@
       <groupId>ar.com.kfgodel</groupId>
       <artifactId>dependency-by-convention</artifactId>
       <version>0.1-SNAPSHOT</version>
+    </dependency>
+
+    <!-- Spec for testing -->
+    <dependency>
+      <groupId>ar.com.dgarcia</groupId>
+      <artifactId>java-spec</artifactId>
     </dependency>
 
   </dependencies>
