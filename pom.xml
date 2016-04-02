@@ -28,6 +28,7 @@
     <version.diamond>1.0.1-SNAPSHOT</version.diamond>
     <version.groovy>2.1.5</version.groovy>
     <version.joda-time>2.7</version.joda-time>
+    <version.reflections>0.9.9</version.reflections>
   </properties>
 
   <repositories>
@@ -83,11 +84,12 @@
       <version>${version.joda-time}</version>
     </dependency>
 
-    <!-- Persistence types -->
+
+    <!-- Discover transformer classes dynamically -->
     <dependency>
-      <groupId>ar.com.tenpines</groupId>
-      <artifactId>ateam-hibernate</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <groupId>org.reflections</groupId>
+      <artifactId>reflections</artifactId>
+      <version>${version.reflections}</version>
     </dependency>
 
     <!-- Better reflection -->
