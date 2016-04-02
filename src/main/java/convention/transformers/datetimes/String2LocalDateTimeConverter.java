@@ -14,27 +14,31 @@ package convention.transformers.datetimes;
 
 import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
-import org.joda.time.DateTime;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
- * Esta clase sabe como convertir desde un String a un objeto DateTime de Joda
+ * Esta clase sabe como convertir desde un String iso expresado en UTC a un timestamp local
  * 
  * @author D. García
  */
-public class String2DateTimeConverter implements SpecializedTypeConverter<String, DateTime> {
+public class String2LocalDateTimeConverter implements SpecializedTypeConverter<String, LocalDateTime> {
 
 	/**
 	 * @see SpecializedTypeConverter#convertTo(Type,
 	 *      Object, Annotation[])
 	 */
 	@Override
-	public DateTime convertTo(final Type expectedType, final String sourceObject, final Annotation[] contextAnnotations)
+	public LocalDateTime convertTo(final Type expectedType, final String sourceObject, final Annotation[] contextAnnotations)
 			throws CannotConvertException {
 		try {
-			final DateTime dateTime = new DateTime(sourceObject);
+			ZonedDateTime utcTime = ZonedDateTime.parse(sourceObject, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+			final LocalDateTime dateTime = utcTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
 			return dateTime;
 		} catch (final IllegalArgumentException e) {
 			throw new CannotConvertException("El formato del String es rechazado por DateTime", sourceObject,
@@ -42,8 +46,8 @@ public class String2DateTimeConverter implements SpecializedTypeConverter<String
 		}
 	}
 
-	public static String2DateTimeConverter create() {
-		String2DateTimeConverter converter = new String2DateTimeConverter();
+	public static String2LocalDateTimeConverter create() {
+		String2LocalDateTimeConverter converter = new String2LocalDateTimeConverter();
 		return converter;
 	}
 

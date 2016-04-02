@@ -27,8 +27,9 @@
     <version.bean2bean>1.1.4</version.bean2bean>
     <version.diamond>1.0.1-SNAPSHOT</version.diamond>
     <version.groovy>2.1.5</version.groovy>
-    <version.joda-time>2.7</version.joda-time>
     <version.reflections>0.9.9</version.reflections>
+    <version.byconvention>0.1-SNAPSHOT</version.byconvention>
+    <version.dependencybyconvention>0.1-SNAPSHOT</version.dependencybyconvention>
   </properties>
 
   <repositories>
@@ -77,14 +78,6 @@
       </exclusions>
     </dependency>
 
-    <!-- Time representations -->
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>${version.joda-time}</version>
-    </dependency>
-
-
     <!-- Discover transformer classes dynamically -->
     <dependency>
       <groupId>org.reflections</groupId>
@@ -103,14 +96,14 @@
     <dependency>
       <groupId>ar.com.kfgodel</groupId>
       <artifactId>by-convention</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>${version.byconvention}</version>
     </dependency>
 
     <!-- Allow dependency injection -->
     <dependency>
       <groupId>ar.com.kfgodel</groupId>
       <artifactId>dependency-by-convention</artifactId>
-      <version>0.1-SNAPSHOT</version>
+      <version>${version.dependencybyconvention}</version>
     </dependency>
 
     <!-- Spec for testing -->
