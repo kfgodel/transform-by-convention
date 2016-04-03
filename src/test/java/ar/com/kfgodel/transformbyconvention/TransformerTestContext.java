@@ -5,6 +5,7 @@ import convention.transformers.datetimes.LocalDateTime2StringConverter;
 import convention.transformers.datetimes.String2LocalDateTimeConverter;
 import convention.transformers.doubles.DecimalString2DoubleConverter;
 import convention.transformers.doubles.Double2DecimalStringConverter;
+import convention.transformers.doubles.Double2LongConverter;
 
 import java.util.function.Supplier;
 
@@ -24,8 +25,10 @@ public interface TransformerTestContext extends TestContext {
   void string2double(Supplier<DecimalString2DoubleConverter> definition);
 
   Double2DecimalStringConverter double2string();
-
   void double2string(Supplier<Double2DecimalStringConverter> definition);
 
+  Double2LongConverter double2long();
+
+  void double2long(Supplier<Double2LongConverter> definition);
 
 }

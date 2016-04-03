@@ -13,6 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
 
 /**
+ * This type verifies the behavior of teh string to local datetime converter
  * Created by kfgodel on 03/04/16.
  */
 @RunWith(JavaSpecRunner.class)
