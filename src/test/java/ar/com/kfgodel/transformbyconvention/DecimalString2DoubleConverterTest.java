@@ -39,12 +39,17 @@ public class DecimalString2DoubleConverterTest extends JavaSpec<TransformerTestC
         assertThat(converted).isEqualTo(12.9);
       });
 
+      it("uses the point as thousands group separator", () -> {
+        Double converted = context().string2double().convertTo(null, "1.000", null);
+        assertThat(converted).isEqualTo(1000.0);
+      });
+
       it("throws an exception if the string uses point as decimal separator", () -> {
         try {
           context().string2double().convertTo(null, "12.9", null);
           failBecauseExceptionWasNotThrown(CannotConvertException.class);
         } catch (CannotConvertException e) {
-          assertThat(e).hasMessage("La cadena[12.9] no posee el formato esperado. Se esperaba un numero decimal con comas con el formato ###.###,##");
+          assertThat(e).hasMessage("La cadena[12.9] no posee el formato esperado. Se esperaba un numero decimal con comas con el formato #.###,##");
         }
       });
 
