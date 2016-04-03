@@ -3,6 +3,8 @@
  */
 package convention.transformers.doubles;
 
+import ar.com.kfgodel.nary.api.Nary;
+import ar.com.kfgodel.transformbyconvention.impl.converters.FormattedConverterSupport;
 import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 
@@ -15,7 +17,7 @@ import java.util.Locale;
  * 
  * @author D. García
  */
-public class Double2DecimalStringConverter implements SpecializedTypeConverter<Double, String> {
+public class Double2DecimalStringConverter extends FormattedConverterSupport implements SpecializedTypeConverter<Double, String> {
 
 	/**
 	 * @see SpecializedTypeConverter#convertTo(Type,
@@ -28,11 +30,20 @@ public class Double2DecimalStringConverter implements SpecializedTypeConverter<D
 			// Por las dudas
 			return null;
 		}
-		// En alemania usan el mismo formato decimal y viene predefinido (a dif de nosotros o
-		// españa)
-		// El formato indica que queremos agrupar miles, y que son 2 decimales
-		final String formatted = String.format(Locale.GERMANY, "%,.2f", sourceObject);
-		return formatted;
+
+		Nary<String> userFormat = getUserFormatterPatterFrom(contextAnnotations);
+		// Si no nos indican uno, agrupamos miles dejamos 2 decimales
+		String providedFormat = userFormat.orElse("%,.2f");
+
+		// En alemania usan los mismos simbolos para separar miles y decimales
+		// Lo usamos porque viene predefinido, y el nuestro no
+		try {
+			final String formatted = String.format(Locale.GERMANY, providedFormat, sourceObject);
+			return formatted;
+		} catch (IllegalArgumentException e) {
+			throw new CannotConvertException("El formato de conversion[" + providedFormat + "] es invalido " +
+				"y no puede utilizarse con el numero[" + sourceObject + "]", sourceObject, expectedType, e);
+		}
 	}
 
 	public static Double2DecimalStringConverter create() {
