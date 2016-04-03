@@ -4,9 +4,7 @@
 package convention.transformers.datetimes;
 
 import ar.com.kfgodel.nary.api.Nary;
-import net.sf.kfgodel.bean2bean.annotations.FormatterPattern;
 import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
-import net.sf.kfgodel.bean2bean.conversion.converters.ConverterUtils;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 
 import java.lang.annotation.Annotation;
@@ -21,11 +19,10 @@ import java.time.format.DateTimeFormatter;
  *
  * @author D.García
  */
-public class LocalDateTime2StringConverter implements SpecializedTypeConverter<LocalDateTime, String> {
+public class LocalDateTime2StringConverter extends LocalDateTimeConverterSupport implements SpecializedTypeConverter<LocalDateTime, String> {
 
   /**
-   * @see SpecializedTypeConverter#convertTo(Type,
-   * Object, Annotation[])
+   * @see SpecializedTypeConverter#convertTo(Type, Object, Annotation[])
    */
   @Override
   public String convertTo(final Type expectedType, final LocalDateTime sourceObject, final Annotation[] contextAnnotations)
@@ -34,10 +31,10 @@ public class LocalDateTime2StringConverter implements SpecializedTypeConverter<L
       return null;
     }
 
-    Nary<DateTimeFormatter> userFormatter = getUserFormatterFrom(contextAnnotations);
-    return userFormatter.mapOptional((formatter) -> {
+    Nary<DateTimeFormatter> userprovidedFormatter = getUserFormatterFrom(contextAnnotations, sourceObject, expectedType);
+    return userprovidedFormatter.mapOptional((userFormatter) -> {
       // We format as the user requested
-      String formatted = sourceObject.format(formatter);
+      String formatted = sourceObject.format(userFormatter);
       return formatted;
     }).orElseGet(() -> {
       // If no user format we do UTC shift and ISO format
@@ -59,26 +56,6 @@ public class LocalDateTime2StringConverter implements SpecializedTypeConverter<L
     ZonedDateTime utcZoned = locallyZoned.withZoneSameInstant(ZoneId.of("Z"));
     String isoFormatted = utcZoned.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     return isoFormatted;
-  }
-
-  /**
-   * Tries to get the custom format that the user wants to apply
-   *
-   * @param contextAnnotations The annotations to get it from
-   * @return The custom format or an empty nary if there's no format
-   */
-  private Nary<DateTimeFormatter> getUserFormatterFrom(Annotation[] contextAnnotations) {
-    if (contextAnnotations == null || contextAnnotations.length == 0) {
-      return Nary.empty();
-    }
-    final FormatterPattern pattern = ConverterUtils.getContextAnnotationLike(FormatterPattern.class, contextAnnotations);
-    if (pattern == null) {
-      // No hay annotation de formateo
-      return Nary.empty();
-    }
-    String userFormat = pattern.value();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern(userFormat);
-    return Nary.of(formatter);
   }
 
   public static LocalDateTime2StringConverter create() {
