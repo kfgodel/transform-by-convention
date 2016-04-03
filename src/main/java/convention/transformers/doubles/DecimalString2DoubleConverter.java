@@ -46,10 +46,10 @@ public class DecimalString2DoubleConverter implements SpecializedTypeConverter<S
 		try {
 			parsed = numberFormatter.parse(sourceObject);
 		} catch (final ParseException e) {
-			throw new CannotConvertException("No se pudo interpretar la cadena como numero decimal con comas: \""
+			throw new CannotConvertException("Error desconocido al parsear un texto a numero decimal: \""
 					+ sourceObject + "\"", sourceObject, expectedType, e);
 		}
-		final Double result = Double.valueOf(parsed.doubleValue());
+		final Double result = parsed.doubleValue();
 		return result;
 	}
 
@@ -62,8 +62,7 @@ public class DecimalString2DoubleConverter implements SpecializedTypeConverter<S
 	 */
 	protected void verificarFormato(String toVerify, Type expectedType) {
 		if (!numerosConComa.matcher(toVerify).matches() && !numerosConPuntoYComa.matcher(toVerify).matches()){
-			throw new CannotConvertException("No se pudo interpretar la cadena como numero decimal con comas: \""
-					+ toVerify + "\"", toVerify, expectedType);
+			throw new CannotConvertException("La cadena[" + toVerify + "] no posee el formato esperado. Se esperaba un numero decimal con comas con el formato ###.###,##", toVerify, expectedType);
 		}
 		
 	}

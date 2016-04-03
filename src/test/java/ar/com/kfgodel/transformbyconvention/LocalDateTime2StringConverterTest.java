@@ -61,9 +61,7 @@ public class LocalDateTime2StringConverterTest extends JavaSpec<TransformerTestC
           } catch (CannotConvertException e) {
             assertThat(e).hasMessage("El formato indicado[le invalid format] no es valido para un DateTimeFormatter");
           }
-
         });
-
       });
     });
   }
