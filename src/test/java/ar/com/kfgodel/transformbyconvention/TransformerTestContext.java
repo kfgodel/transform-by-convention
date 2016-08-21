@@ -1,6 +1,6 @@
 package ar.com.kfgodel.transformbyconvention;
 
-import ar.com.dgarcia.javaspec.api.TestContext;
+import ar.com.dgarcia.javaspec.api.contexts.TestContext;
 import convention.transformers.datetimes.LocalDateTime2StringConverter;
 import convention.transformers.datetimes.String2LocalDateTimeConverter;
 import convention.transformers.doubles.DecimalString2DoubleConverter;
