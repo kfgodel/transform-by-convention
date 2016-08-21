@@ -26,7 +26,7 @@ import java.lang.reflect.Type;
  *
  * @author D. García
  */
-public class EnumTo2EnumConverter implements SpecializedTypeConverter<EnumTo, Enum<?>> {
+public class EnumTo2EnumConverter implements SpecializedTypeConverter<EnumTo, Enum> {
     private static final Logger LOG = LoggerFactory.getLogger(EnumTo2EnumConverter.class);
 
     /**
