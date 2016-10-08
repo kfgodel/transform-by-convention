@@ -26,10 +26,10 @@ public class LocalDateTime2StringConverterTest extends JavaSpec<TransformerTestC
   @Override
   public void define() {
     describe("a LocalDateTime to String converter", () -> {
-      context().local2string(LocalDateTime2StringConverter::create);
+      context().localDateTime2String(LocalDateTime2StringConverter::create);
 
       it("returns null when null passed", () -> {
-        String converted = context().local2string().convertTo(String.class, null, null);
+        String converted = context().localDateTime2String().convertTo(String.class, null, null);
         assertThat(converted).isNull();
       });
 
@@ -43,20 +43,20 @@ public class LocalDateTime2StringConverterTest extends JavaSpec<TransformerTestC
         it("converts a local date to a string in iso format with a UTC timezone reference", () -> {
           // Expressed as local in a GMT-3 zone
           LocalDateTime datetime = LocalDateTime.of(2016, 04, 03, 12, 33, 00);
-          String converted = context().local2string().convertTo(null, datetime, null);
+          String converted = context().localDateTime2String().convertTo(null, datetime, null);
           assertThat(converted).isEqualTo("2016-04-03T15:33:00Z");
         });
 
         it("uses a different format when passed as additional annotations", () -> {
           LocalDateTime datetime = LocalDateTime.of(2016, 04, 03, 12, 33, 00);
-          String converted = context().local2string().convertTo(null, datetime, FakeAnnotatedClass.getAttributeAnnotations());
+          String converted = context().localDateTime2String().convertTo(null, datetime, FakeAnnotatedClass.getAttributeAnnotations());
           assertThat(converted).isEqualTo("03/04/2016 12:33:00");
         });
 
         it("throws an exception if the user format is invalid", () -> {
           LocalDateTime datetime = LocalDateTime.of(2016, 04, 03, 12, 33, 00);
           try {
-            context().local2string().convertTo(null, datetime, FakeAnnotatedClass.getInvalidAnnotations());
+            context().localDateTime2String().convertTo(null, datetime, FakeAnnotatedClass.getInvalidAnnotations());
             failBecauseExceptionWasNotThrown(CannotConvertException.class);
           } catch (CannotConvertException e) {
             assertThat(e).hasMessage("El formato indicado[le invalid format] no es valido para un DateTimeFormatter");

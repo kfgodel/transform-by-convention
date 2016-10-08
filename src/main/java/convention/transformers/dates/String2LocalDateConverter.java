@@ -10,31 +10,30 @@
  * licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative
  * Commons Attribution 3.0 Unported License</a>.
  */
-package convention.transformers.datetimes;
+package convention.transformers.dates;
 
 import ar.com.kfgodel.nary.api.Nary;
+import convention.transformers.datetimes.DateTimeFormattedConverterSupport;
 import net.sf.kfgodel.bean2bean.conversion.SpecializedTypeConverter;
 import net.sf.kfgodel.bean2bean.exceptions.CannotConvertException;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 /**
- * Esta clase sabe como convertir desde un String iso expresado en UTC a un timestamp local
+ * Esta clase sabe como convertir desde un String iso expresado a una fecha local
  *
  * @author D. García
  */
-public class String2LocalDateTimeConverter extends DateTimeFormattedConverterSupport implements SpecializedTypeConverter<String, LocalDateTime> {
+public class String2LocalDateConverter extends DateTimeFormattedConverterSupport implements SpecializedTypeConverter<String, LocalDate> {
 
   /**
    * @see SpecializedTypeConverter#convertTo(Type, Object, Annotation[])
    */
   @Override
-  public LocalDateTime convertTo(final Type expectedType, final String sourceObject, final Annotation[] contextAnnotations)
+  public LocalDate convertTo(final Type expectedType, final String sourceObject, final Annotation[] contextAnnotations)
     throws CannotConvertException {
     if (sourceObject == null) {
       return null;
@@ -42,27 +41,16 @@ public class String2LocalDateTimeConverter extends DateTimeFormattedConverterSup
 
     Nary<DateTimeFormatter> userProvidedFormatter = getUserFormatterFrom(contextAnnotations, sourceObject, expectedType);
     return userProvidedFormatter.mapOptional((userFormatter) -> {
-      LocalDateTime parsed = LocalDateTime.parse(sourceObject, userFormatter);
+      LocalDate parsed = LocalDate.parse(sourceObject, userFormatter);
       return parsed;
     }).orElseGet(() -> {
-      LocalDateTime parsed = parseAsIsoFormat(sourceObject, expectedType);
+      LocalDate parsed = LocalDate.parse(sourceObject, DateTimeFormatter.ISO_DATE);
       return parsed;
     });
   }
 
-  private LocalDateTime parseAsIsoFormat(String sourceObject, Type expectedType) {
-    try {
-      ZonedDateTime utcTime = ZonedDateTime.parse(sourceObject, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-      final LocalDateTime dateTime = utcTime.withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
-      return dateTime;
-    } catch (final IllegalArgumentException e) {
-      throw new CannotConvertException("El formato del String es rechazado por DateTime", sourceObject,
-        expectedType, e);
-    }
-  }
-
-  public static String2LocalDateTimeConverter create() {
-    String2LocalDateTimeConverter converter = new String2LocalDateTimeConverter();
+  public static String2LocalDateConverter create() {
+    String2LocalDateConverter converter = new String2LocalDateConverter();
     return converter;
   }
 

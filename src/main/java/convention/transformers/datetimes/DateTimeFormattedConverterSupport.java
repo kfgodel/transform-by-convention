@@ -9,10 +9,10 @@ import java.lang.reflect.Type;
 import java.time.format.DateTimeFormatter;
 
 /**
- * This type offers som helper methods to subtypes
+ * This type offers some methods for time convertion
  * Created by kfgodel on 03/04/16.
  */
-public class LocalDateTimeConverterSupport extends FormattedConverterSupport {
+public class DateTimeFormattedConverterSupport extends FormattedConverterSupport {
   /**
    * Tries to get the custom format that the user wants to apply
    *

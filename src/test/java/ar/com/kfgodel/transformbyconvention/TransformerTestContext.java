@@ -1,6 +1,8 @@
 package ar.com.kfgodel.transformbyconvention;
 
 import ar.com.dgarcia.javaspec.api.contexts.TestContext;
+import convention.transformers.dates.LocalDate2StringConverter;
+import convention.transformers.dates.String2LocalDateConverter;
 import convention.transformers.datetimes.LocalDateTime2StringConverter;
 import convention.transformers.datetimes.String2LocalDateTimeConverter;
 import convention.transformers.doubles.DecimalString2DoubleConverter;
@@ -15,11 +17,21 @@ import java.util.function.Supplier;
  */
 public interface TransformerTestContext extends TestContext {
 
-  LocalDateTime2StringConverter local2string();
-  void local2string(Supplier<LocalDateTime2StringConverter> definition);
+  LocalDateTime2StringConverter localDateTime2String();
 
-  String2LocalDateTimeConverter string2local();
-  void string2local(Supplier<String2LocalDateTimeConverter> definition);
+  void localDateTime2String(Supplier<LocalDateTime2StringConverter> definition);
+
+  String2LocalDateTimeConverter string2localDateTime();
+
+  void string2localDateTime(Supplier<String2LocalDateTimeConverter> definition);
+
+  LocalDate2StringConverter localDate2String();
+
+  void localDate2String(Supplier<LocalDate2StringConverter> definition);
+
+  String2LocalDateConverter string2LocalDate();
+
+  void string2LocalDate(Supplier<String2LocalDateConverter> definition);
 
   DecimalString2DoubleConverter string2double();
   void string2double(Supplier<DecimalString2DoubleConverter> definition);
@@ -28,7 +40,6 @@ public interface TransformerTestContext extends TestContext {
   void double2string(Supplier<Double2DecimalStringConverter> definition);
 
   Double2LongConverter double2long();
-
   void double2long(Supplier<Double2LongConverter> definition);
 
 }

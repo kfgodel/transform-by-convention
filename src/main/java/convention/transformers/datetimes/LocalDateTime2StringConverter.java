@@ -19,7 +19,7 @@ import java.time.format.DateTimeFormatter;
  *
  * @author D.García
  */
-public class LocalDateTime2StringConverter extends LocalDateTimeConverterSupport implements SpecializedTypeConverter<LocalDateTime, String> {
+public class LocalDateTime2StringConverter extends DateTimeFormattedConverterSupport implements SpecializedTypeConverter<LocalDateTime, String> {
 
   /**
    * @see SpecializedTypeConverter#convertTo(Type, Object, Annotation[])
