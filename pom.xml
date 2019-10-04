@@ -25,7 +25,7 @@
 
   <properties>
     <version.bean2bean>1.1.4</version.bean2bean>
-    <version.diamond>1.0.1-SNAPSHOT</version.diamond>
+    <version.diamond>1.0.4</version.diamond>
     <version.groovy>2.1.5</version.groovy>
     <version.reflections>0.9.9</version.reflections>
     <version.byconvention>0.1-SNAPSHOT</version.byconvention>
@@ -36,7 +36,7 @@
     <repository>
       <id>kfgodel_mosquito</id>
       <name>Repo Mosquito</name>
-      <url>http://kfgodel.info:8081/nexus/content/groups/public/</url>
+      <url>http://kfgodel.info:8081/nexus/repository/public/</url>
     </repository>
   </repositories>
 
