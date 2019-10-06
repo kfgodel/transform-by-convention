@@ -16,14 +16,18 @@
 
   <name>Transform-By-Convention</name>
   <description>Project to enable object conversions using conventions to ease the configuration of converters</description>
+  <url>https://github.com/kfgodel/transform-by-convention</url>
 
   <scm>
-    <connection>scm:git:ssh://github.com/kfgodel/transform-by-convention.git</connection>
     <developerConnection>scm:git:ssh://github.com/kfgodel/transform-by-convention.git</developerConnection>
-    <url>https://github.com/kfgodel/transform-by-convention</url>
+    <connection>${project.scm.developerConnection}</connection>
+    <url>${project.url}</url>
   </scm>
 
   <properties>
+    <!-- Sonar properties to prevent unintentional id changes (Reference: https://docs.sonarqube.org/latest/analysis/analysis-parameters/) -->
+    <sonar.projectKey>ar.com.kfgodel:transform-by-convention:master</sonar.projectKey>
+
     <version.bean2bean>1.1.4</version.bean2bean>
     <version.diamond>1.0.4</version.diamond>
     <version.groovy>2.1.5</version.groovy>
