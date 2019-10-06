@@ -26,7 +26,7 @@
 
   <properties>
     <!-- Sonar properties to prevent unintentional id changes (Reference: https://docs.sonarqube.org/latest/analysis/analysis-parameters/) -->
-    <sonar.projectKey>ar.com.kfgodel:transform-by-convention:master</sonar.projectKey>
+    <sonar.projectKey>ar.com.kfgodel:transform-by-convention</sonar.projectKey>
 
     <version.bean2bean>1.1.4</version.bean2bean>
     <version.diamond>1.0.4</version.diamond>
